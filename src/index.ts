@@ -53,7 +53,14 @@ const onMessage = (message: Message) => (translations: PoTranslations) => {
     return '';
   }
 
-  const ftlMessage: string[] = [`${message.id.name} = ${localizedMsg}`];
+  const ftlMessage: string[] = [];
+
+  if (message.comment) {
+    ftlMessage.push(`# ${message.comment.content}`);
+  }
+
+  ftlMessage.push(`${message.id.name} = ${localizedMsg}`);
+
   const ftlAttributes: string[] = [];
 
   if (hasAttributes) {
@@ -101,7 +108,7 @@ export const po2ftl: Po2Ftl = (poFilePath) => (ftlFilePath) => {
         // TODO
         break;
       default:
-        console.error(`Unhandle Fluent type ${x.type}, bailing...`);
+        console.error(`Unhandled Fluent type ${x.type}, bailing...`);
         process.exit(1);
     }
 
